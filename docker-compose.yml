@@ -57,7 +57,7 @@ services:
 
 
   dash:
-    build: ./testlocal/ 
+    build: ./dash/ 
     container_name: con_ma_dash
     hostname: ${HOSTNAME}
     ports:
