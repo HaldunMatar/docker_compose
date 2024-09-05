@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: con_ma_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 'Password123$'
+      MYSQL_DATABASE: madb
+      MYSQL_USER: dba
+      MYSQL_PASSWORD: 'Password123$'
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Mount the init.sql file
+    ports:
+      - "3307:3306"
+
+    networks:
+      app-network:
+        ipv4_address: 192.168.100.10      
+
+  app:
+    build: .
+  
+    hostname: ${HOSTNAME}
+    extra_hosts: 
+      - "host.docker.internal:100.94.180.13"
+    container_name: con_ma_back
+    environment:
+      - HOST_NAME=my-mysql-container
+
+
+      
+    ports:
+      - "5005:5005"
+    depends_on:
+      - db
+    networks:
+      app-network:
+        ipv4_address: 192.168.100.11
+  
+  chat_service:
+    build: ./flaskvanna/vanna-flask/ # Replace with the actual path to the chat service Dockerfile
+    container_name: con_ma_chat
+    hostname: ${HOSTNAME}
+    ports:
+      - "8084:8084"
+    extra_hosts:
+      - "host.docker.internal:100.94.180.13"
+    environment:
+      - HOST=100.94.180.13
+      - PORT=8084
+    networks:
+      app-network:
+        ipv4_address: 192.168.100.12
+
+
+  dash:
+    build: ./testlocal/ 
+    container_name: con_ma_dash
+    hostname: ${HOSTNAME}
+    ports:
+      - "9596:9596"
+    extra_hosts:
+      - "host.docker.internal:100.94.180.13"
+    environment:
+      - HOST=100.94.180.13
+      - PORT=9596
+    command: npm start
+    networks:
+      app-network:
+        ipv4_address: 192.168.100.13    
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.100.0/24

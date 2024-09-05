@@ -1,0 +1,169 @@
+
+gama
+
+Installing the NVIDIA Container Toolkit
+
+Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.16.0 documentation
+
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+sudo sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+sudo apt-get update
+
+sudo apt-get install -y nvidia-container-toolkit
+
+sudo nvidia-ctk runtime configure --runtime=docker
+
+sudo systemctl restart docker
+
+sudo docker run --gpus all --hostname "$(hostname)" -v /home/gama/back/footfall.mp4:/app/footfall.mp4 -p 5005:5005    -p 1000-1020:1000-1020 -p 1100-1120:1100-1120   -p 9999:9999 --add-host=host.docker.internal:192.168.1.32 gama_image
+ 
+alpha
+
+sudo chmod 777 /var/run/docker.sock
+
+docker run --hostname "$(hostname)" -v /home/techniaa/ODM/ODP/ma_back_mp/ma_project/vspeed1.mp4:/app/vspeed1.mp4 -p 5005:5005    -p 1000-1020:1000-1020 -p 1100-1120:1100-1120   -p 9999:9999 --add-host=host.docker.internal:100.74.149.25 inas90/ma_insight:gama_ip
+
+====================================================
+Docker:
+
+
+ Stop and Remove the Stopped Container:
+List All Containers (including stopped ones):
+
+
+docker ps -a
+
+
+
+Remove the Stopped Container:
+
+
+docker rm id
+This will remove the stopped container and free up the image for deletion.
+
+list of images:
+docker images
+
+delete image:
+docker rmi id
+
+delete every thing:
+
+docker system prune -a --volumes
+
+
+return mysql.connector.connect(
+        
+                
+                host="host.docker.internal",
+                database='madb',
+                password='',
+                user='root'
+                   )
+
+
+docker build -t ma_insight-image2 .   
+docker run -p 5005:5005 ma_insight-image2 
+
+
+When running a Docker container, you can use the --network="host" option to allow the container to share the same network namespace as the host. This means the container will have the same IP address as the host machine.
+
+bash
+Copy code
+docker run --network="host" <image_name>
+
+On Linux/macOS:
+docker run -e HOST_NAME=$(hostname) -p 5005:5005 ma_insight-image3
+
+
+sudo docker run --hostname "$(hostname)" -v /home/gama/docker/dwell.mp4:/app/dwell.mp4 -p 5005:5005 -p 9752:9752 -p 9999:9999 --add-host=host.docker.internal:192.168.1.113 ma_insight_image_v1
+
+sudo docker run --hostname "$(hostname)"  -p 5005:5005 -p 9752:9752 -p 9999:9999 --add-host=host.docker.internal:127.0.0.1 ma_insight_image_v1:latest
+
+
+sudo docker run --hostname "$(hostname)" -p 5005:5005    -p 1000-1020:1000-1020 -p 1100-1120:1100-1120   -p 9999:9999  ma_insight_delta
+
+-p 1000-2048:1000-2048
+=================================
+save image 
+
+docker save -o myimage.tar <image_name>:<tag>
+myimage.tar: The name of the file where the image will be saved.
+<image_name>:<tag>: The name and tag of the image you want to save (e.g., myapp:latest).
+docker save -o myimage.tar ma_insight-image:latest
+
+docker save -o mainsight.tar ma_insight_image_local:latest
+
+
+
+Transfer the Image to Another Server
+You can transfer the saved .tar file to another server using tools like scp, rsync, or any other file transfer method. For example, using scp:
+
+bash   F:\odm20\ODM\myimage.tar
+Copy code
+scp F:\odm20\ODM\myimage.tar gama@100.66.253.61:/home/gama/docker
+scp F:\dwell.mp4 gama@100.66.253.61:/home/gama/docker
+scp F:\odm20\ODM\mainsight.tar gama@100.66.253.61:/home/gama/docker
+
+"F:\dwell.mp4"
+3. Load the Docker Image on the New Server
+Once the .tar file is on the new server, you can load the image into Docker using the docker load command:
+
+bash
+Copy code
+docker load -i myimage.tar
+docker load -i mainsight.tar
+
+4. Run the Docker Container on the New Server
+After loading the image, you can run a container from it on the new server:
+
+bash
+Copy code
+docker run <options> <image_name>:<tag>
+
+docker run  ma_insight-image:latest
+
+
+
+docker run --hostname "$(hostname)" -p 5005:5005 ma_insight_image
+
+
+======================================
+
+
+docker hub
+
+
+docker tag local-image:tagname new-repo:tagname
+docker push new-repo:tagname
+
+
+docker push inas90/ma_insight:tagname
+
+
+
+
+docker tag ma_insight_image:latest inas90/ma_insight:latest
+
+docker login
+
+docker push inas90/ma_insight:latest
+
+docker pull inas90/ma_insight:latest
+
+
+
+
+
+for delta:
+docker buildx build --platform linux/arm64 -t inas90/ma_insight:delta-arm .
+
+docker push inas90/ma_insight:delta-arm
+
+docker pull inas90/ma_insight:delta-arm
+
+
+sudo docker run --hostname "$(hostname)" -p 5005:5005    -p 1000-1020:1000-1020 -p 1100-1120:1100-1120   -p 9999:9999  inas90/ma_insight:delta-arm
+===============================

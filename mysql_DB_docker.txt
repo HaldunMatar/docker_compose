@@ -1,0 +1,43 @@
+- source myenv/bin/activate
+Mysql DB docker 
+
+1-docker build -t my-mysql-image .
+2-docker run -d --name my-mysql-container -p 3306:3306 my-mysql-image
+- docker run -d --name my-mysql-container -p 3307:3306 my-mysql-image
+
+3-use madb ; CREATE TABLE users ( id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), email VARCHAR(100) );
+
+4- INSERT INTO users (name, email) VALUES ('ali', ‘ali@example.com');
+-docker run -d --name my-mysql-container -p 3306:3306 my-mysql-image
+ docker exec -it my-mysql-container mysql -u dba -p.    cleaaaaa
+SELECT * FROM users1;
+USE madb ;
+
+-docker exec -it my-mysql-container bash
+——————————remove all container——————-
+docker stop $(docker ps -a)
+docker rm $(docker ps -a)
+
+source myenv/bin/activate
+
+
+
+db password: Password123$
+
+
+docker-compose up --build
+
+ docker exec -it con_ma_db bash
+-  docker build -t my-mysql-image .
+- docker-compose up --build
+- docker exec -it my-mysql-container mysql -u dba -p
+- USE madb;
+- SHOW TABLES;
+- SELECT * FROM users;  # If this was part of your init.sql
+- docker exec -it my-mysql-container bash
+- apt-get update && apt-get install -y tzdata
+-docker run -d --name my-mysql-container -p 3306:3306 -p 5005:5005  dbdocker-app
+
+CREATE USER 'dba'@'172.18.0.2' IDENTIFIED BY 'Password123$';
+ALTER USER 'dba'@'172.18.0.2' IDENTIFIED BY 'Password123$';
+GRANT ALL PRIVILEGES ON *.* TO 'dba'@'172.18.0.2';clear
